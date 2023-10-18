@@ -60,3 +60,67 @@ class Personnel(PermissionsMixin, AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+    
+
+Business_or_Person_Choices = [('Business', 'Business'), ('Individual', 'Individual')]
+
+
+class Shipper(models.Model):
+    full_name = models.CharField(max_length=225)
+    email = models.EmailField(max_length=225)
+    phone_number = PhoneNumberField()
+    business_or_person = models.CharField(max_length=225, choices=Business_or_Person_Choices, default='Business')
+    password = models.CharField(max_length=225)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedOn = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.full_name
+    
+
+class Carrier(models.Model):
+    email = models.EmailField(max_length=225)
+    full_name = models.CharField(max_length=100)
+    password = models.CharField(max_length=225)
+    phone_number = PhoneNumberField()
+    city = models.CharField(max_length=225)
+    status = models.CharField(max_length=225, choices=[('Domant', 'Domant'), ('Onboarding', 'Onboarding'), ('Processing', 'Processing'), ('Active', 'Active'), ('Available', 'Available'), ('Engaged', 'Engaged'), ('Withdraw', 'Withdraw'), ('Suspended', 'Suspended'), ('Blacklisted', 'Blacklisted'), ('Archive', 'Archive')], default='Onboarding')
+    national_id = models.CharField(max_length=225)
+    national_id_document = models.FileField()
+    driving_licence = models.FileField()
+    good_conduct = models.FileField()
+    kra_pin = models.FileField()
+    defensive_driving_certificate = models.FileField()
+    reference_letter_from_chief = models.FileField()
+    profile_photo = models.ImageField(upload_to='profilePhotos')
+    medical_report  = models.FileField()
+    appointment_letter = models.FileField()
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedOn = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return self.full_name
+    
+
+class VehicleType(models.Model):
+    name = models.CharField(max_length=225)
+    description = models.TextField()
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedOn = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+    
+
+class Vehicle(models.Model):
+    registration_number = models.CharField(max_length=225)
+    insurance_certificate_number = models.CharField(max_length=225)
+    Vehicle_model = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
+    vehicle_photo = models.ImageField('vehicleProfiles')
+    driver = models.ForeignKey(Carrier, on_delete=models.CASCADE)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedOn = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.registration_number
