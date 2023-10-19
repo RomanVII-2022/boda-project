@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from bodaapp.models import Personnel, Shipper, Carrier, VehicleType, Vehicle
+from bodaapp.models import Personnel, Shipper, Carrier, VehicleType, Vehicle, Order
 
 class PersonnelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,4 +28,10 @@ class VehicleTypeSerializer(serializers.ModelSerializer):
 class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle
+        fields = '__all__'
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
         fields = '__all__'

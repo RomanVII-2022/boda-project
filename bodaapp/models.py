@@ -124,3 +124,23 @@ class Vehicle(models.Model):
 
     def __str__(self):
         return self.registration_number
+
+
+class Order(models.Model):
+    commodity = models.CharField(max_length=225)
+    description = models.TextField()
+    vehicle_type = models.CharField(max_length=225, choices=[('Motorcyle', 'Motorcycle'), ('TukTuk', 'TukTuk')], default='Motorcyle')
+    pickup_location = models.CharField(max_length=225)
+    pickup_date = models.DateTimeField()
+    shipper = models.ForeignKey(Shipper, on_delete=models.CASCADE)
+    dropoff_location = models.CharField(max_length=225)
+    dropoff_contact_name = models.CharField(max_length=225)
+    dropoff_phone_number = PhoneNumberField()
+    dropoff_instruction = models.TextField()
+    order_status = models.CharField(max_length=225, choices=[('Inprogress', 'Inprogress'), ('Upcoming', 'Upcoming'), ('Posted', 'Posted'), ('Cancelled', 'Cancelled')])
+    payment_status = models.CharField(max_length=225)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedOn = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.commodity

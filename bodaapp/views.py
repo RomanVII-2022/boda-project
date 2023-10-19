@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from bodaapp.serializers import PersonnelSerializer, ShipperSerializer, CarrierSerializer, VehicleTypeSerializer, VehicleSerializer
-from bodaapp.models import Personnel, Shipper, Carrier, VehicleType, Vehicle
+from bodaapp.serializers import PersonnelSerializer, ShipperSerializer, CarrierSerializer, VehicleTypeSerializer, VehicleSerializer, OrderSerializer
+from bodaapp.models import Personnel, Shipper, Carrier, VehicleType, Vehicle, Order
 from rest_framework import viewsets
 
 class PersonnelViewSet(viewsets.ModelViewSet):
@@ -28,4 +28,6 @@ class VehicleViewset(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
 
 
-
+class OrderViewset(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
