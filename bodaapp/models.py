@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
+import uuid
 
 
 class PersonnelManager(BaseUserManager):
@@ -41,6 +42,8 @@ class Personnel(PermissionsMixin, AbstractBaseUser):
     full_name = models.CharField(max_length=225)
     phone_number = PhoneNumberField()
     job_title = models.CharField(max_length=225)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedOn = models.DateTimeField(auto_now=True)
     
     
     is_active = models.BooleanField(default=True)
@@ -62,10 +65,17 @@ class Personnel(PermissionsMixin, AbstractBaseUser):
         return True
     
 
+class MyUuid(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    class Meta:
+        abstract = True
+    
+
 Business_or_Person_Choices = [('Business', 'Business'), ('Individual', 'Individual')]
 
 
-class Shipper(models.Model):
+class Shipper(MyUuid):
     full_name = models.CharField(max_length=225)
     email = models.EmailField(max_length=225)
     phone_number = PhoneNumberField()
@@ -78,7 +88,7 @@ class Shipper(models.Model):
         return self.full_name
     
 
-class Carrier(models.Model):
+class Carrier(MyUuid):
     email = models.EmailField(max_length=225)
     full_name = models.CharField(max_length=100)
     password = models.CharField(max_length=225)
@@ -103,7 +113,7 @@ class Carrier(models.Model):
         return self.full_name
     
 
-class VehicleType(models.Model):
+class VehicleType(MyUuid):
     name = models.CharField(max_length=225)
     description = models.TextField()
     createdAt = models.DateTimeField(auto_now_add=True)
@@ -113,7 +123,7 @@ class VehicleType(models.Model):
         return self.name
     
 
-class Vehicle(models.Model):
+class Vehicle(MyUuid):
     registration_number = models.CharField(max_length=225)
     insurance_certificate_number = models.CharField(max_length=225)
     Vehicle_model = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
@@ -126,7 +136,7 @@ class Vehicle(models.Model):
         return self.registration_number
 
 
-class Order(models.Model):
+class Order(MyUuid):
     commodity = models.CharField(max_length=225)
     description = models.TextField()
     vehicle_type = models.CharField(max_length=225, choices=[('Motorcyle', 'Motorcycle'), ('TukTuk', 'TukTuk')], default='Motorcyle')
